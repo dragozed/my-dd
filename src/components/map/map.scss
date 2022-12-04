@@ -57,16 +57,22 @@
           width: 30%;
           height: 100px;
           background-color: grey;
+          border: solid black;
         }
         .midline {
           width: 30%;
           height: 100px;
           background-color: red;
+          border: solid black;
         }
         .backline {
           width: 30%;
           height: 100px;
           background-color: yellow;
+          border: solid black;
+        }
+        .active {
+          border: solid rgb(17, 206, 17);
         }
       }
       .info-bar {
@@ -108,16 +114,22 @@
           width: 30%;
           height: 100px;
           background-color: grey;
+          border: solid black;
         }
         .midline {
           width: 30%;
           height: 100px;
           background-color: red;
+          border: solid black;
         }
         .backline {
           width: 30%;
           height: 100px;
           background-color: yellow;
+          border: solid black;
+        }
+        .active {
+          border: solid rgb(17, 206, 17);
         }
       }
       .enemy-info {

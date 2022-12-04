@@ -110,13 +110,28 @@ export function Map() {
       <div className="field">
         <div className="team">
           <div className="characters">
-            <div onClick={() => {}} className="frontline">
+            <div
+              onClick={() => {}}
+              className={`frontline ${
+                currAttacker.team + currAttacker.row === "T0" ? "active" : ""
+              }`}
+            >
               {teamStats[0].name}
             </div>
-            <div onClick={() => {}} className="midline">
+            <div
+              onClick={() => {}}
+              className={`midline ${
+                currAttacker.team + currAttacker.row === "T1" ? "active" : ""
+              }`}
+            >
               {teamStats[1].name}
             </div>
-            <div onClick={() => {}} className="backline">
+            <div
+              onClick={() => {}}
+              className={`backline ${
+                currAttacker.team + currAttacker.row === "T2" ? "active" : ""
+              }`}
+            >
               {teamStats[2].name}
             </div>
           </div>
@@ -158,7 +173,13 @@ export function Map() {
         </div>
         <div className="encounter">
           <div className="enemies">
-            <div className={"frontline"}>{enemyStats[0].name}</div>
+            <div
+              className={`frontline ${
+                currAttacker.team + currAttacker.row === "E0" ? "active" : ""
+              }`}
+            >
+              {enemyStats[0].name}
+            </div>
             <button
               disabled={enemyDisable[0] || enemyStats[0].status === "Dead"}
               onClick={() => {
@@ -175,7 +196,13 @@ export function Map() {
             >
               ATTACK!
             </button>
-            <div className="midline">{enemyStats[1].name}</div>
+            <div
+              className={`midline ${
+                currAttacker.team + currAttacker.row === "E1" ? "active" : ""
+              }`}
+            >
+              {enemyStats[1].name}
+            </div>
             <button
               disabled={enemyDisable[1] || enemyStats[1].status === "Dead"}
               onClick={() => {
@@ -192,7 +219,13 @@ export function Map() {
             >
               ATTACK!
             </button>
-            <div className="backline">{enemyStats[2].name}</div>
+            <div
+              className={`backline ${
+                currAttacker.team + currAttacker.row === "E2" ? "active" : ""
+              }`}
+            >
+              {enemyStats[2].name}
+            </div>
             <button
               disabled={enemyDisable[2] || enemyStats[2].status === "Dead"}
               onClick={() => {
