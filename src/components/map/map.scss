@@ -1,0 +1,132 @@
+.room-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  border: solid red 5px;
+  width: 90%;
+  height: 800px;
+  button:enabled {
+    cursor: pointer;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    .action-order {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 50%;
+      div {
+        background-color: rgb(192, 192, 192);
+      }
+    }
+    .depth {
+      font-size: 40px;
+      width: 10%;
+    }
+    .utility-buttons {
+      width: 40%;
+    }
+  }
+  .bottombar {
+    margin-bottom: 10px;
+    button {
+      background-color: rgb(48, 146, 12);
+      color: #fff;
+      padding: 15px;
+      font-size: 24px;
+    }
+  }
+  .field {
+    display: flex;
+    height: 100%;
+    .team {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      height: 100%;
+      border: solid purple 1px;
+      .characters {
+        height: 50%;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-around;
+        align-items: center;
+        .frontline {
+          width: 30%;
+          height: 100px;
+          background-color: grey;
+        }
+        .midline {
+          width: 30%;
+          height: 100px;
+          background-color: red;
+        }
+        .backline {
+          width: 30%;
+          height: 100px;
+          background-color: yellow;
+        }
+      }
+      .info-bar {
+        width: 100%;
+        height: 50%;
+        background-color: aqua;
+        .character-info {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-around;
+        }
+        .skill-bar {
+          height: 80px;
+          background-color: gray;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .skill {
+            height: 60px;
+            width: 60px;
+            background-color: #fff;
+          }
+        }
+      }
+    }
+    .encounter {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      height: 100%;
+      border: solid orange 1px;
+      .enemies {
+        height: 50%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        .frontline {
+          width: 30%;
+          height: 100px;
+          background-color: grey;
+        }
+        .midline {
+          width: 30%;
+          height: 100px;
+          background-color: red;
+        }
+        .backline {
+          width: 30%;
+          height: 100px;
+          background-color: yellow;
+        }
+      }
+      .enemy-info {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        height: 50%;
+        background-color: rgb(201, 236, 25);
+      }
+    }
+  }
+}
