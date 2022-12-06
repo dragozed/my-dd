@@ -5,9 +5,6 @@
   border: solid red 5px;
   width: 90%;
   height: 800px;
-  button:enabled {
-    cursor: pointer;
-  }
   .topbar {
     display: flex;
     justify-content: space-around;
@@ -141,4 +138,16 @@
       }
     }
   }
+}
+.ReactModal__Content {
+  button {
+    background-color: rgb(48, 146, 12);
+    color: #fff;
+    padding: 15px;
+    font-size: 24px;
+  }
+}
+
+button:enabled {
+  cursor: pointer;
 }

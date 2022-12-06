@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 import {
   attackEnemy,
@@ -6,17 +7,20 @@ import {
   attackOrdCalc,
   targetableEnemy,
   simEnemyAttack,
+  encounterGenerator,
 } from "./logic";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
-  incrementDepth,
   selectDepth,
   selectTeam,
   selectEnemy,
   changeEStatus,
   changeStatus,
+  setDepth,
 } from "./mapSlice";
 import "./map.scss";
+
+Modal.setAppElement("#root");
 
 export function Map() {
   const dispatch = useAppDispatch();
@@ -37,8 +41,11 @@ export function Map() {
       status: "",
     },
   ]);
-  const [fightBgn, setFightBgn] = useState(false);
   const [enemyDisable, setEnemyDisable] = useState([true, true, true]);
+  //operational
+  const [fightBgn, setFightBgn] = useState(false);
+  const [floorOver, setFloorOver] = useState(false);
+  const [victory, setVictory] = useState(false);
 
   const currAttacker = {
     team: attackOrder[0].position.charAt(0),
@@ -68,10 +75,58 @@ export function Map() {
         setAttackOrder(attackOrder.filter((e) => e.position !== item.position));
       }
     });
+    if (
+      enemyStats[0].status === "Dead" &&
+      enemyStats[1].status === "Dead" &&
+      enemyStats[2].status === "Dead"
+    ) {
+      setVictory(true);
+      setFloorOver(true);
+    } else if (
+      teamStats[0].status === "Dead" &&
+      teamStats[1].status === "Dead" &&
+      teamStats[2].status === "Dead"
+    ) {
+      setVictory(false);
+      setFloorOver(true);
+    }
+  };
+
+  const goDepth = (floor: number, resTeam: boolean) => {
+    setVictory(false);
+    setFightBgn(false);
+    setFloorOver(false);
+    resTeam
+      ? generateFloor(dispatch, floor)
+      : encounterGenerator(dispatch, floor);
   };
 
   return (
     <div className="room-container">
+      <Modal
+        isOpen={floorOver}
+        style={{
+          overlay: { backgroundColor: "grey" },
+        }}
+      >
+        {victory ? (
+          <button
+            onClick={() => {
+              goDepth(depth + 1, false);
+            }}
+          >
+            Go Deeper
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              goDepth(0, true);
+            }}
+          >
+            Return Depth 0
+          </button>
+        )}
+      </Modal>
       <div className="topbar">
         <div className="action-order">
           {attackOrder.map((item, key) => {
@@ -266,13 +321,7 @@ export function Map() {
         </div>
       </div>
       <div className="bottombar">
-        <button
-          onClick={() => {
-            dispatch(incrementDepth());
-          }}
-        >
-          Go Deeper
-        </button>
+        <button onClick={() => {}}>Decoy Button</button>
       </div>
     </div>
   );

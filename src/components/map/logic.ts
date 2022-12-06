@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Action } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
-  decrementDepth,
-  incrementDepth,
   incrementDepthBy,
   selectDepth,
   selectTeam,
@@ -13,6 +11,7 @@ import {
   decrementHealthBy,
   decrementEHealthBy,
   setEnemy,
+  setDepth,
   changeEStatus,
 } from "./mapSlice";
 import { useDispatch } from "react-redux";
@@ -112,7 +111,8 @@ const teamGenerator = (dispatch: any) => {
   );
 };
 
-const encounterGenerator = (dispatch: any, depth: number) => {
+export const encounterGenerator = (dispatch: any, depth: number) => {
+  dispatch(setDepth(depth));
   const k = Math.ceil((depth + 1) / 10); //increased by 1 every 10 levels
   dispatch(
     setEnemy({
@@ -159,18 +159,11 @@ export const attackOrdCalc = (
   teamstats: Array<any>,
   enemystats: Array<any>
 ) => {
-  const attackOrder = teamstats.concat(enemystats);
+  let attackOrder = teamstats.concat(enemystats);
   attackOrder.sort((a, b) => b.speed - a.speed);
-  const currentAtt = setCurrentAtt(attackOrder);
-  return attackOrder;
-};
+  attackOrder = attackOrder.filter((e) => e.status !== "Dead");
 
-const setCurrentAtt = (mergedstats: Array<any>) => {
-  const currentAtt = [
-    mergedstats[0].position.charAt(0),
-    Number(mergedstats[0].position.charAt(1)),
-  ];
-  return currentAtt;
+  return attackOrder;
 };
 
 export const simEnemyAttack = (

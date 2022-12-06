@@ -64,7 +64,7 @@ export interface MapState {
 }
 
 const initialState: MapState = {
-  depth: 50,
+  depth: 0,
   teamStats: [
     {
       name: "",
@@ -125,11 +125,8 @@ export const mapSlice = createSlice({
   initialState,
   reducers: {
     //Depth Reducers
-    incrementDepth: (state) => {
-      state.depth += 1;
-    },
-    decrementDepth: (state) => {
-      state.depth -= 1;
+    setDepth: (state, action: PayloadAction<number>) => {
+      state.depth = action.payload;
     },
     incrementDepthBy: (state, action: PayloadAction<number>) => {
       state.depth += action.payload;
@@ -218,9 +215,8 @@ export const mapSlice = createSlice({
 });
 
 export const {
-  incrementDepth,
-  decrementDepth,
   incrementDepthBy,
+  setDepth,
   setTeam,
   setEnemy,
   incrementHealthBy,
