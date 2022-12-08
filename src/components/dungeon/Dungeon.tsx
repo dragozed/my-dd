@@ -17,12 +17,12 @@ import {
   changeEStatus,
   changeStatus,
   setDepth,
-} from "./mapSlice";
-import "./map.scss";
+} from "./dungeonSlice";
+import "./Dungeon.scss";
 
 Modal.setAppElement("#root");
 
-export function Map() {
+export const Dungeon = () => {
   const dispatch = useAppDispatch();
 
   const depth = useAppSelector(selectDepth);
@@ -110,21 +110,27 @@ export function Map() {
         }}
       >
         {victory ? (
-          <button
-            onClick={() => {
-              goDepth(depth + 1, false);
-            }}
-          >
-            Go Deeper
-          </button>
+          <>
+            <div className="info-text">You Succeed</div>
+            <button
+              onClick={() => {
+                goDepth(depth + 1, false);
+              }}
+            >
+              Go Deeper
+            </button>
+          </>
         ) : (
-          <button
-            onClick={() => {
-              goDepth(0, true);
-            }}
-          >
-            Return Depth 0
-          </button>
+          <>
+            <div className="info-text">Your Team Failed</div>
+            <button
+              onClick={() => {
+                goDepth(0, true);
+              }}
+            >
+              Return Depth 0
+            </button>
+          </>
         )}
       </Modal>
       <div className="topbar">
@@ -132,21 +138,6 @@ export function Map() {
           {attackOrder.map((item, key) => {
             return <div key={key}>{item.name}</div>;
           })}
-          <button
-            disabled={!(currAttacker.team === "E" && fightBgn)}
-            onClick={() => {
-              setAttackOrder(
-                simEnemyAttack(
-                  dispatch,
-                  enemyStats[currAttacker.row].skillname,
-                  attackOrder,
-                  teamStats
-                )
-              );
-            }}
-          >
-            PlayEnemyTurn
-          </button>
         </div>
         <div className="depth">Depth: {depth}</div>
         <div className="utility-buttons">
@@ -242,6 +233,8 @@ export function Map() {
                   attackEnemy(
                     dispatch,
                     teamStats[currAttacker.row].skillname,
+                    teamStats[currAttacker.row].physicalpow,
+                    teamStats[currAttacker.row].arcanepow,
                     1,
                     attackOrder
                   )
@@ -265,6 +258,8 @@ export function Map() {
                   attackEnemy(
                     dispatch,
                     teamStats[currAttacker.row].skillname,
+                    teamStats[currAttacker.row].physicalpow,
+                    teamStats[currAttacker.row].arcanepow,
                     2,
                     attackOrder
                   )
@@ -288,6 +283,8 @@ export function Map() {
                   attackEnemy(
                     dispatch,
                     teamStats[currAttacker.row].skillname,
+                    teamStats[currAttacker.row].physicalpow,
+                    teamStats[currAttacker.row].arcanepow,
                     3,
                     attackOrder
                   )
@@ -298,24 +295,45 @@ export function Map() {
               ATTACK!
             </button>
           </div>
-          <div className="enemy-info">
-            <div className="fe-info">
-              <div className="name">{enemyStats[0].name}</div>
-              <div className="health">Health: {enemyStats[0].health}</div>
-              <div className="speed">Speed: {enemyStats[0].speed}</div>
-              <div className="status">Status: {enemyStats[0].status}</div>
+          <div className="enemy-info-bar">
+            <div className="enemy-skill-bar">
+              <button
+                disabled={!(currAttacker.team === "E" && fightBgn)}
+                onClick={() => {
+                  setAttackOrder(
+                    simEnemyAttack(
+                      dispatch,
+                      enemyStats[currAttacker.row].skillname,
+                      enemyStats[currAttacker.row].physicalpow,
+                      enemyStats[currAttacker.row].arcanepow,
+                      attackOrder,
+                      teamStats
+                    )
+                  );
+                }}
+              >
+                PlayEnemyTurn
+              </button>
             </div>
-            <div className="me-info">
-              <div className="name">{enemyStats[1].name}</div>
-              <div className="health">Health: {enemyStats[1].health}</div>
-              <div className="speed">Speed: {enemyStats[1].speed}</div>
-              <div className="status">Status: {enemyStats[1].status}</div>
-            </div>
-            <div className="be-info">
-              <div className="name">{enemyStats[2].name}</div>
-              <div className="health">Health: {enemyStats[2].health}</div>
-              <div className="speed">Speed: {enemyStats[2].speed}</div>
-              <div className="status">Status: {enemyStats[2].status}</div>
+            <div className="enemy-info">
+              <div className="fe-info">
+                <div className="name">{enemyStats[0].name}</div>
+                <div className="health">Health: {enemyStats[0].health}</div>
+                <div className="speed">Speed: {enemyStats[0].speed}</div>
+                <div className="status">Status: {enemyStats[0].status}</div>
+              </div>
+              <div className="me-info">
+                <div className="name">{enemyStats[1].name}</div>
+                <div className="health">Health: {enemyStats[1].health}</div>
+                <div className="speed">Speed: {enemyStats[1].speed}</div>
+                <div className="status">Status: {enemyStats[1].status}</div>
+              </div>
+              <div className="be-info">
+                <div className="name">{enemyStats[2].name}</div>
+                <div className="health">Health: {enemyStats[2].health}</div>
+                <div className="speed">Speed: {enemyStats[2].speed}</div>
+                <div className="status">Status: {enemyStats[2].status}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -325,4 +343,4 @@ export function Map() {
       </div>
     </div>
   );
-}
+};

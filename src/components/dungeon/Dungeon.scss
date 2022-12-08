@@ -2,9 +2,9 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  border: solid red 5px;
-  width: 90%;
-  height: 800px;
+  border: solid red 2px;
+  width: 1600px;
+  height: 900px;
   .topbar {
     display: flex;
     justify-content: space-around;
@@ -38,12 +38,14 @@
   .field {
     display: flex;
     height: 100%;
+    background-image: url(../../img/backgrounds/DungeonBackground.jpg);
+    background-size: 100% 50%;
+    background-repeat: no-repeat;
     .team {
       display: flex;
       flex-direction: column;
       width: 50%;
       height: 100%;
-      border: solid purple 1px;
       .characters {
         height: 50%;
         display: flex;
@@ -51,22 +53,25 @@
         justify-content: space-around;
         align-items: center;
         .frontline {
-          width: 30%;
-          height: 100px;
-          background-color: grey;
-          border: solid black;
+          width: 256px;
+          height: 256px;
+          border: solid rgb(71, 71, 71);
+          background-image: url(../../img/characters/Harold.png);
+          background-size: cover;
         }
         .midline {
-          width: 30%;
-          height: 100px;
-          background-color: red;
-          border: solid black;
+          width: 256px;
+          height: 256px;
+          border: solid rgb(71, 71, 71);
+          background-image: url(../../img/characters/Terra.png);
+          background-size: cover;
         }
         .backline {
-          width: 30%;
-          height: 100px;
-          background-color: yellow;
-          border: solid black;
+          width: 256px;
+          height: 256px;
+          border: solid rgb(71, 71, 71);
+          background-image: url(../../img/characters/Lilith.png);
+          background-size: cover;
         }
         .active {
           border: solid rgb(17, 206, 17);
@@ -75,7 +80,7 @@
       .info-bar {
         width: 100%;
         height: 50%;
-        background-color: aqua;
+        background-color: rgb(95, 88, 88);
         .character-info {
           display: flex;
           flex-direction: row-reverse;
@@ -83,7 +88,7 @@
         }
         .skill-bar {
           height: 80px;
-          background-color: gray;
+          background-color: rgb(34, 24, 24);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -100,7 +105,6 @@
       flex-direction: column;
       width: 50%;
       height: 100%;
-      border: solid orange 1px;
       .enemies {
         height: 50%;
         display: flex;
@@ -108,38 +112,59 @@
         justify-content: space-around;
         align-items: center;
         .frontline {
-          width: 30%;
-          height: 100px;
+          width: 256px;
+          height: 256px;
           background-color: grey;
-          border: solid black;
+          border: solid rgb(71, 71, 71);
         }
         .midline {
-          width: 30%;
-          height: 100px;
+          width: 256px;
+          height: 256px;
           background-color: red;
-          border: solid black;
+          border: solid rgb(71, 71, 71);
         }
         .backline {
-          width: 30%;
-          height: 100px;
+          width: 256px;
+          height: 256px;
           background-color: yellow;
-          border: solid black;
+          border: solid rgb(71, 71, 71);
         }
         .active {
           border: solid rgb(17, 206, 17);
         }
       }
-      .enemy-info {
-        display: flex;
-        justify-content: space-around;
+      .enemy-info-bar {
         width: 100%;
         height: 50%;
-        background-color: rgb(201, 236, 25);
+        background-color: rgb(95, 88, 88);
+        .enemy-skill-bar {
+          height: 80px;
+          background-color: rgb(34, 24, 24);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          button {
+            height: 60px;
+            background-color: #fff;
+          }
+        }
+        .enemy-info {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+        }
       }
     }
   }
 }
 .ReactModal__Content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  .info-text {
+    font-size: 40px;
+  }
   button {
     background-color: rgb(48, 146, 12);
     color: #fff;

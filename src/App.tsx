@@ -1,14 +1,18 @@
 import React from "react";
-import logo from "./logo.svg";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
-import { Map } from "./components/map/Map";
+import Header from "./components/header/Header";
+import { Dungeon } from "./components/dungeon/Dungeon";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Map />
-      </header>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/dungeon" element={<Dungeon />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

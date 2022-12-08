@@ -1,9 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import mapSlice from "../components/map/mapSlice";
+import dungeonSlice from "../components/dungeon/dungeonSlice";
 
 export const store = configureStore({
   reducer: {
-    map: mapSlice,
+    dungeon: dungeonSlice,
   },
 });
 

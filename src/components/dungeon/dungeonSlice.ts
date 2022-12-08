@@ -6,13 +6,15 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
 
-export interface MapState {
+export interface DungeonState {
   depth: number;
   teamStats: [
     {
       name: string;
       health: number;
       speed: number;
+      physicalpow: number;
+      arcanepow: number;
       skillname: string;
       position: string;
       status: string;
@@ -21,6 +23,8 @@ export interface MapState {
       name: string;
       health: number;
       speed: number;
+      physicalpow: number;
+      arcanepow: number;
       skillname: string;
       position: string;
       status: string;
@@ -29,6 +33,8 @@ export interface MapState {
       name: string;
       health: number;
       speed: number;
+      physicalpow: number;
+      arcanepow: number;
       skillname: string;
       position: string;
       status: string;
@@ -39,6 +45,8 @@ export interface MapState {
       name: string;
       health: number;
       speed: number;
+      physicalpow: number;
+      arcanepow: number;
       skillname: string;
       position: string;
       status: string;
@@ -47,6 +55,8 @@ export interface MapState {
       name: string;
       health: number;
       speed: number;
+      physicalpow: number;
+      arcanepow: number;
       skillname: string;
       position: string;
       status: string;
@@ -55,6 +65,8 @@ export interface MapState {
       name: string;
       health: number;
       speed: number;
+      physicalpow: number;
+      arcanepow: number;
       skillname: string;
       position: string;
       status: string;
@@ -63,13 +75,15 @@ export interface MapState {
   status: "idle" | "loading" | "failed";
 }
 
-const initialState: MapState = {
+const initialState: DungeonState = {
   depth: 0,
   teamStats: [
     {
       name: "",
       health: 999,
       speed: 0,
+      physicalpow: 0,
+      arcanepow: 0,
       skillname: "",
       position: "T1",
       status: "",
@@ -78,6 +92,8 @@ const initialState: MapState = {
       name: "",
       health: 999,
       speed: 0,
+      physicalpow: 0,
+      arcanepow: 0,
       skillname: "",
       position: "T2",
       status: "",
@@ -86,6 +102,8 @@ const initialState: MapState = {
       name: "",
       health: 999,
       speed: 0,
+      physicalpow: 0,
+      arcanepow: 0,
       skillname: "",
       position: "T3",
       status: "",
@@ -96,6 +114,8 @@ const initialState: MapState = {
       name: "",
       health: 999,
       speed: 0,
+      physicalpow: 0,
+      arcanepow: 0,
       position: "E1",
       skillname: "",
       status: "",
@@ -104,6 +124,8 @@ const initialState: MapState = {
       name: "",
       health: 999,
       speed: 0,
+      physicalpow: 0,
+      arcanepow: 0,
       position: "E2",
       skillname: "",
       status: "",
@@ -112,6 +134,8 @@ const initialState: MapState = {
       name: "",
       health: 999,
       speed: 0,
+      physicalpow: 0,
+      arcanepow: 0,
       position: "E3",
       skillname: "",
       status: "",
@@ -120,8 +144,8 @@ const initialState: MapState = {
   status: "idle",
 };
 
-export const mapSlice = createSlice({
-  name: "map",
+export const dungeonSlice = createSlice({
+  name: "dungeon",
   initialState,
   reducers: {
     //Depth Reducers
@@ -141,6 +165,8 @@ export const mapSlice = createSlice({
           name: string;
           health: number;
           speed: number;
+          physicalpow: number;
+          arcanepow: number;
           skillname: string;
           position: string;
           status: string;
@@ -181,6 +207,8 @@ export const mapSlice = createSlice({
           name: string;
           health: number;
           speed: number;
+          physicalpow: number;
+          arcanepow: number;
           skillname: string;
           position: string;
           status: string;
@@ -225,12 +253,12 @@ export const {
   decrementEHealthBy,
   changeEStatus,
   changeStatus,
-} = mapSlice.actions;
+} = dungeonSlice.actions;
 
-export const selectDepth = (state: RootState) => state.map.depth;
+export const selectDepth = (state: RootState) => state.dungeon.depth;
 
-export const selectTeam = (state: RootState) => state.map.teamStats;
+export const selectTeam = (state: RootState) => state.dungeon.teamStats;
 
-export const selectEnemy = (state: RootState) => state.map.enemyStats;
+export const selectEnemy = (state: RootState) => state.dungeon.enemyStats;
 
-export default mapSlice.reducer;
+export default dungeonSlice.reducer;
