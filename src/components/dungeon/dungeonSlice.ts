@@ -4,10 +4,16 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { Action } from "@remix-run/router";
 import { RootState, AppThunk } from "../../app/store";
 
 export interface DungeonState {
   depth: number;
+  teamSelection: [
+    { name: string; armour: string },
+    { name: string; armour: string },
+    { name: string; armour: string }
+  ];
   teamStats: [
     {
       name: string;
@@ -77,6 +83,11 @@ export interface DungeonState {
 
 const initialState: DungeonState = {
   depth: 0,
+  teamSelection: [
+    { name: "Harold", armour: "None" },
+    { name: "Terra", armour: "None" },
+    { name: "Lilith", armour: "None" },
+  ],
   teamStats: [
     {
       name: "",
@@ -154,6 +165,28 @@ export const dungeonSlice = createSlice({
     },
     incrementDepthBy: (state, action: PayloadAction<number>) => {
       state.depth += action.payload;
+    },
+    //TEAM SELECTION
+    setTeamSelection: (
+      state,
+      action: PayloadAction<{
+        value: [
+          {
+            name: string;
+            armour: string;
+          },
+          {
+            name: string;
+            armour: string;
+          },
+          {
+            name: string;
+            armour: string;
+          }
+        ];
+      }>
+    ) => {
+      state.teamSelection = action.payload.value;
     },
 
     //Team Reducers
@@ -245,6 +278,7 @@ export const dungeonSlice = createSlice({
 export const {
   incrementDepthBy,
   setDepth,
+  setTeamSelection,
   setTeam,
   setEnemy,
   incrementHealthBy,
@@ -256,6 +290,9 @@ export const {
 } = dungeonSlice.actions;
 
 export const selectDepth = (state: RootState) => state.dungeon.depth;
+
+export const selectTeamSelection = (state: RootState) =>
+  state.dungeon.teamSelection;
 
 export const selectTeam = (state: RootState) => state.dungeon.teamStats;
 

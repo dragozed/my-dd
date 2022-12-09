@@ -38,7 +38,6 @@
   .field {
     display: flex;
     height: 100%;
-    background-image: url(../../img/backgrounds/DungeonBackground.jpg);
     background-size: 100% 50%;
     background-repeat: no-repeat;
     .team {
@@ -56,21 +55,18 @@
           width: 256px;
           height: 256px;
           border: solid rgb(71, 71, 71);
-          background-image: url(../../img/characters/Harold.png);
           background-size: cover;
         }
         .midline {
           width: 256px;
           height: 256px;
           border: solid rgb(71, 71, 71);
-          background-image: url(../../img/characters/Terra.png);
           background-size: cover;
         }
         .backline {
           width: 256px;
           height: 256px;
           border: solid rgb(71, 71, 71);
-          background-image: url(../../img/characters/Lilith.png);
           background-size: cover;
         }
         .active {

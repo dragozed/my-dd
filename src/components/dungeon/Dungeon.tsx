@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeart,
+  faBolt,
+  faDumbbell,
+  faHatWizard,
+} from "@fortawesome/free-solid-svg-icons";
+
 import {
   attackEnemy,
   generateFloor,
@@ -8,7 +16,7 @@ import {
   targetableEnemy,
   simEnemyAttack,
   encounterGenerator,
-} from "./logic";
+} from "../logic";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
   selectDepth,
@@ -17,6 +25,7 @@ import {
   changeEStatus,
   changeStatus,
   setDepth,
+  selectTeamSelection,
 } from "./dungeonSlice";
 import "./Dungeon.scss";
 
@@ -25,6 +34,7 @@ Modal.setAppElement("#root");
 export const Dungeon = () => {
   const dispatch = useAppDispatch();
 
+  const teamSelection = useAppSelector(selectTeamSelection);
   const depth = useAppSelector(selectDepth);
   //team
   const teamStats = useAppSelector(selectTeam);
@@ -54,7 +64,7 @@ export const Dungeon = () => {
   };
 
   useEffect(() => {
-    generateFloor(dispatch, depth);
+    encounterGenerator(dispatch, depth);
   }, []);
 
   useEffect(() => {
@@ -97,7 +107,13 @@ export const Dungeon = () => {
     setFightBgn(false);
     setFloorOver(false);
     resTeam
-      ? generateFloor(dispatch, floor)
+      ? generateFloor(
+          dispatch,
+          floor,
+          teamSelection[0],
+          teamSelection[1],
+          teamSelection[2]
+        )
       : encounterGenerator(dispatch, floor);
   };
 
@@ -153,11 +169,19 @@ export const Dungeon = () => {
           </button>
         </div>
       </div>
-      <div className="field">
+      <div
+        className="field"
+        style={{
+          backgroundImage: `url(/img/backgrounds/DungeonBackground.jpg)`,
+        }}
+      >
         <div className="team">
           <div className="characters">
             <div
               onClick={() => {}}
+              style={{
+                backgroundImage: `url(/img/characters/${teamStats[0].name}.png)`,
+              }}
               className={`frontline ${
                 currAttacker.team + currAttacker.row === "T0" ? "active" : ""
               }`}
@@ -166,6 +190,9 @@ export const Dungeon = () => {
             </div>
             <div
               onClick={() => {}}
+              style={{
+                backgroundImage: `url(/img/characters/${teamStats[1].name}.png)`,
+              }}
               className={`midline ${
                 currAttacker.team + currAttacker.row === "T1" ? "active" : ""
               }`}
@@ -174,6 +201,9 @@ export const Dungeon = () => {
             </div>
             <div
               onClick={() => {}}
+              style={{
+                backgroundImage: `url(/img/characters/${teamStats[2].name}.png)`,
+              }}
               className={`backline ${
                 currAttacker.team + currAttacker.row === "T2" ? "active" : ""
               }`}
@@ -198,20 +228,59 @@ export const Dungeon = () => {
             <div className="character-info">
               <div className="ft-info">
                 <div className="name">{teamStats[0].name}</div>
-                <div className="health">Health: {teamStats[0].health}</div>
-                <div className="speed">Speed: {teamStats[0].speed}</div>
+                <div className="health">
+                  <FontAwesomeIcon icon={faHeart} /> Health:{" "}
+                  {teamStats[0].health}
+                </div>
+                <div className="speed">
+                  <FontAwesomeIcon icon={faBolt} /> Speed: {teamStats[0].speed}
+                </div>
+                <div className="physicalpow">
+                  <FontAwesomeIcon icon={faDumbbell} /> PhyPow:{" "}
+                  {teamStats[0].physicalpow}
+                </div>
+                <div className="arcanepow">
+                  <FontAwesomeIcon icon={faHatWizard} /> ArcPow:{" "}
+                  {teamStats[0].arcanepow}
+                </div>
                 <div className="status">Status: {teamStats[0].status}</div>
               </div>
               <div className="mt-info">
                 <div className="name">{teamStats[1].name}</div>
-                <div className="health">Health: {teamStats[1].health}</div>
-                <div className="speed">Speed: {teamStats[1].speed}</div>
+                <div className="health">
+                  <FontAwesomeIcon icon={faHeart} /> Health:{" "}
+                  {teamStats[1].health}
+                </div>
+                <div className="speed">
+                  <FontAwesomeIcon icon={faBolt} /> Speed: {teamStats[1].speed}
+                </div>
+                <div className="physicalpow">
+                  <FontAwesomeIcon icon={faDumbbell} /> PhyPow:{" "}
+                  {teamStats[1].physicalpow}
+                </div>
+                <div className="arcanepow">
+                  <FontAwesomeIcon icon={faHatWizard} /> ArcPow:{" "}
+                  {teamStats[1].arcanepow}
+                </div>
                 <div className="status">Status: {teamStats[1].status}</div>
               </div>
               <div className="bt-info">
                 <div className="name">{teamStats[2].name}</div>
-                <div className="health">Health: {teamStats[2].health}</div>
-                <div className="speed">Speed: {teamStats[2].speed}</div>
+                <div className="health">
+                  <FontAwesomeIcon icon={faHeart} /> Health:{" "}
+                  {teamStats[2].health}
+                </div>
+                <div className="speed">
+                  <FontAwesomeIcon icon={faBolt} /> Speed: {teamStats[2].speed}
+                </div>
+                <div className="physicalpow">
+                  <FontAwesomeIcon icon={faDumbbell} /> PhyPow:{" "}
+                  {teamStats[2].physicalpow}
+                </div>
+                <div className="arcanepow">
+                  <FontAwesomeIcon icon={faHatWizard} /> ArcPow:{" "}
+                  {teamStats[2].arcanepow}
+                </div>
                 <div className="status">Status: {teamStats[2].status}</div>
               </div>
             </div>
@@ -232,9 +301,7 @@ export const Dungeon = () => {
                 setAttackOrder(
                   attackEnemy(
                     dispatch,
-                    teamStats[currAttacker.row].skillname,
-                    teamStats[currAttacker.row].physicalpow,
-                    teamStats[currAttacker.row].arcanepow,
+                    teamStats[currAttacker.row],
                     1,
                     attackOrder
                   )
@@ -257,9 +324,7 @@ export const Dungeon = () => {
                 setAttackOrder(
                   attackEnemy(
                     dispatch,
-                    teamStats[currAttacker.row].skillname,
-                    teamStats[currAttacker.row].physicalpow,
-                    teamStats[currAttacker.row].arcanepow,
+                    teamStats[currAttacker.row],
                     2,
                     attackOrder
                   )
@@ -282,9 +347,7 @@ export const Dungeon = () => {
                 setAttackOrder(
                   attackEnemy(
                     dispatch,
-                    teamStats[currAttacker.row].skillname,
-                    teamStats[currAttacker.row].physicalpow,
-                    teamStats[currAttacker.row].arcanepow,
+                    teamStats[currAttacker.row],
                     3,
                     attackOrder
                   )
@@ -303,9 +366,7 @@ export const Dungeon = () => {
                   setAttackOrder(
                     simEnemyAttack(
                       dispatch,
-                      enemyStats[currAttacker.row].skillname,
-                      enemyStats[currAttacker.row].physicalpow,
-                      enemyStats[currAttacker.row].arcanepow,
+                      enemyStats[currAttacker.row],
                       attackOrder,
                       teamStats
                     )
