@@ -3,16 +3,21 @@ import React, { useEffect, useState } from "react";
 import { teamGenerator } from "../logic";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
+  addArmour,
+  selectInventory,
   selectTeam,
   selectTeamSelection,
   setDepth,
+  setInventory,
   setTeamSelection,
 } from "../dungeon/dungeonSlice";
 import "./Loadout.scss";
+import { type } from "os";
 
 export const Loadout = () => {
   const dispatch = useAppDispatch();
 
+  const inventory = useAppSelector(selectInventory);
   const teamSelection = useAppSelector(selectTeamSelection);
   const [formInputs, setFormInputs] = useState({
     armour0: "None",
@@ -31,9 +36,6 @@ export const Loadout = () => {
         [row]: value,
       };
     });
-    console.log(formInputs);
-
-    //setFormInputs(event.target.value);
   };
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -64,12 +66,18 @@ export const Loadout = () => {
       teamSelection[2]
     );
     dispatch(setDepth(0));
+    dispatch(
+      setInventory({
+        currency: [{ gold: 0 }],
+        armour: [
+          { name: "None", type: "All" },
+          { name: "DeadMansArmour", type: "All" },
+        ],
+      })
+    );
   }, []);
   return (
     <>
-      {formInputs.armour0}
-      {formInputs.armour1}
-      {formInputs.armour2}
       <div className="team">
         <div className="frontline">
           <div
@@ -116,22 +124,43 @@ export const Loadout = () => {
           <div className="frontline-inputs">
             <label htmlFor="armour">Select Armour: </label>
             <select id="armour" onChange={handleChange}>
-              <option value={"None,armour0"}>None</option>
-              <option value={"DeadMansArmour,armour0"}>DeadMansArmour</option>
+              {inventory.armour.map((e, key) => {
+                return e.type === "All" || e.type === "Heavy" ? (
+                  <option key={key} value={`${e.name},armour0`}>
+                    {e.name}
+                  </option>
+                ) : (
+                  ""
+                );
+              })}
             </select>
           </div>
           <div className="midline-inputs">
             <label htmlFor="armour">Select Armour: </label>
             <select id="armour" onChange={handleChange}>
-              <option value={"None,armour1"}>None</option>
-              <option value={"DeadMansArmour,armour1"}>DeadMansArmour</option>
+              {inventory.armour.map((e, key) => {
+                return e.type === "All" || e.type === "Medium" ? (
+                  <option key={key} value={`${e.name},armour1`}>
+                    {e.name}
+                  </option>
+                ) : (
+                  ""
+                );
+              })}
             </select>
           </div>
           <div className="backline-inputs">
             <label htmlFor="armour">Select Armour: </label>
             <select id="armour" onChange={handleChange}>
-              <option value={"None,armour2"}>None</option>
-              <option value={"DeadMansArmour,armour2"}>DeadMansArmour</option>
+              {inventory.armour.map((e, key) => {
+                return e.type === "All" || e.type === "Light" ? (
+                  <option key={key} value={`${e.name},armour2`}>
+                    {e.name}
+                  </option>
+                ) : (
+                  ""
+                );
+              })}
             </select>
           </div>
         </div>

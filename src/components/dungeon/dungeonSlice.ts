@@ -9,6 +9,7 @@ import { RootState, AppThunk } from "../../app/store";
 
 export interface DungeonState {
   depth: number;
+  inventory: { currency: [{ gold: number }]; armour: [any] };
   teamSelection: [
     { name: string; armour: string },
     { name: string; armour: string },
@@ -88,6 +89,11 @@ const initialState: DungeonState = {
     { name: "Terra", armour: "None" },
     { name: "Lilith", armour: "None" },
   ],
+  inventory: {
+    currency: [{ gold: 0 }],
+    armour: [{ name: "None", type: "All" }],
+  },
+
   teamStats: [
     {
       name: "",
@@ -189,6 +195,14 @@ export const dungeonSlice = createSlice({
       state.teamSelection = action.payload.value;
     },
 
+    setInventory: (state, action: PayloadAction<any>) => {
+      state.inventory = action.payload;
+    },
+
+    addArmour: (state, action: PayloadAction<any>) => {
+      state.inventory.armour.push(action.payload);
+    },
+
     //Team Reducers
     setTeam: (
       state,
@@ -281,6 +295,8 @@ export const {
   setTeamSelection,
   setTeam,
   setEnemy,
+  setInventory,
+  addArmour,
   incrementHealthBy,
   decrementHealthBy,
   incrementEHealthBy,
@@ -288,6 +304,8 @@ export const {
   changeEStatus,
   changeStatus,
 } = dungeonSlice.actions;
+
+export const selectInventory = (state: RootState) => state.dungeon.inventory;
 
 export const selectDepth = (state: RootState) => state.dungeon.depth;
 
