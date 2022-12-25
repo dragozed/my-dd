@@ -68,7 +68,6 @@ export const Loadout = () => {
     dispatch(setDepth(0));
     dispatch(
       setInventory({
-        currency: [{ gold: 0 }],
         armour: [
           { name: "None", type: "All" },
           { name: "DeadMansArmour", type: "All" },
@@ -167,6 +166,9 @@ export const Loadout = () => {
 
         <input type="submit" value="Submit" />
       </form>
+      <div className="inventory">
+        <div className="currencies">Gold:{inventory.currency[0].gold}</div>
+      </div>
     </>
   );
 };

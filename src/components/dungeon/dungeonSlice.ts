@@ -4,7 +4,6 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { Action } from "@remix-run/router";
 import { RootState, AppThunk } from "../../app/store";
 
 export interface DungeonState {
@@ -195,8 +194,13 @@ export const dungeonSlice = createSlice({
       state.teamSelection = action.payload.value;
     },
 
+    //Inventory Reducers
+    incGoldBy: (state, action: PayloadAction<number>) => {
+      state.inventory.currency[0].gold += action.payload;
+    },
     setInventory: (state, action: PayloadAction<any>) => {
-      state.inventory = action.payload;
+      const inv = { ...state.inventory, ...action.payload };
+      state.inventory = inv;
     },
 
     addArmour: (state, action: PayloadAction<any>) => {
@@ -295,6 +299,7 @@ export const {
   setTeamSelection,
   setTeam,
   setEnemy,
+  incGoldBy,
   setInventory,
   addArmour,
   incrementHealthBy,

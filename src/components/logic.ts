@@ -68,10 +68,11 @@ export const generateFloor = (
   depth: number,
   character1: { name: string; armour: string },
   character2: { name: string; armour: string },
-  character3: { name: string; armour: string }
+  character3: { name: string; armour: string },
+  setEncounter: any
 ) => {
   teamGenerator(dispatch, character1, character2, character3);
-  encounterGenerator(dispatch, depth);
+  encounterGenerator(dispatch, depth, setEncounter);
 };
 
 export const teamGenerator = (
@@ -100,18 +101,28 @@ export const teamGenerator = (
   );
 };
 
-export const encounterGenerator = (dispatch: any, depth: number) => {
+export const rewardGenerator = (encounter: string, depth: number) => {
+  if (encounter === "Combat") {
+    const k = Math.ceil((depth + 1) / 10); //increased by 1 every 10 levels
+    const gold = getRndInteger(5 * k, 15 * k);
+    return { Gold: gold };
+  } else return { Gold: 0 };
+};
+export const encounterGenerator = (
+  dispatch: any,
+  depth: number,
+  setEncounter: any
+) => {
   dispatch(setDepth(depth));
-  const k = Math.ceil((depth + 1) / 10); //increased by 1 every 10 levels
   dispatch(
     setEnemy({
       row: 1,
       value: {
         name: "EFrnt",
-        health: getRndInteger(20 * k, 30 * k),
-        speed: getRndInteger(3 * k, 7 * k),
-        physicalpow: getRndInteger(10 * k, 15 * k),
-        arcanepow: getRndInteger(0 * k, 0 * k),
+        health: 9999,
+        speed: 9999,
+        physicalpow: 9999,
+        arcanepow: 9999,
         skillname: "EFSkill",
         position: "E1",
         status: "Alive",
@@ -123,10 +134,10 @@ export const encounterGenerator = (dispatch: any, depth: number) => {
       row: 2,
       value: {
         name: "EMid",
-        health: getRndInteger(6 * k, 20 * k),
-        speed: getRndInteger(7 * k, 13 * k),
-        physicalpow: getRndInteger(12 * k, 17 * k),
-        arcanepow: getRndInteger(0 * k, 0 * k),
+        health: 9999,
+        speed: 9999,
+        physicalpow: 9999,
+        arcanepow: 9999,
         skillname: "EMSkill",
         position: "E2",
         status: "Alive",
@@ -138,16 +149,68 @@ export const encounterGenerator = (dispatch: any, depth: number) => {
       row: 3,
       value: {
         name: "EBack",
-        health: getRndInteger(2 * k, 10 * k),
-        speed: getRndInteger(10 * k, 20 * k),
-        physicalpow: getRndInteger(0 * k, 0 * k),
-        arcanepow: getRndInteger(10 * k, 20 * k),
+        health: 9999,
+        speed: 9999,
+        physicalpow: 9999,
+        arcanepow: 9999,
         skillname: "EBSkill",
         position: "E3",
         status: "Alive",
       },
     })
   );
+  const rnd = getRndInteger(1, 1000);
+  if (rnd <= 500) {
+    setEncounter("Combat");
+    const k = Math.ceil((depth + 1) / 10); //increased by 1 every 10 levels
+    dispatch(
+      setEnemy({
+        row: 1,
+        value: {
+          name: "EFrnt",
+          health: getRndInteger(20 * k, 30 * k),
+          speed: getRndInteger(3 * k, 7 * k),
+          physicalpow: getRndInteger(10 * k, 15 * k),
+          arcanepow: getRndInteger(0 * k, 0 * k),
+          skillname: "EFSkill",
+          position: "E1",
+          status: "Alive",
+        },
+      })
+    );
+    dispatch(
+      setEnemy({
+        row: 2,
+        value: {
+          name: "EMid",
+          health: getRndInteger(6 * k, 20 * k),
+          speed: getRndInteger(7 * k, 13 * k),
+          physicalpow: getRndInteger(12 * k, 17 * k),
+          arcanepow: getRndInteger(0 * k, 0 * k),
+          skillname: "EMSkill",
+          position: "E2",
+          status: "Alive",
+        },
+      })
+    );
+    dispatch(
+      setEnemy({
+        row: 3,
+        value: {
+          name: "EBack",
+          health: getRndInteger(2 * k, 10 * k),
+          speed: getRndInteger(10 * k, 20 * k),
+          physicalpow: getRndInteger(0 * k, 0 * k),
+          arcanepow: getRndInteger(10 * k, 20 * k),
+          skillname: "EBSkill",
+          position: "E3",
+          status: "Alive",
+        },
+      })
+    );
+  } else {
+    setEncounter("Zort");
+  }
 };
 
 export const attackOrdCalc = (

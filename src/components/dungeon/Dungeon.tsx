@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import { Canvas } from "@react-three/fiber";
+import { HondaModel } from "./modelsJS/hondaModel";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,6 +18,7 @@ import {
   targetableEnemy,
   simEnemyAttack,
   encounterGenerator,
+  rewardGenerator,
 } from "../logic";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
@@ -25,9 +28,12 @@ import {
   changeEStatus,
   changeStatus,
   setDepth,
+  incGoldBy,
   selectTeamSelection,
+  selectInventory,
 } from "./dungeonSlice";
 import "./Dungeon.scss";
+import { OrbitControls } from "@react-three/drei";
 
 Modal.setAppElement("#root");
 
@@ -40,6 +46,8 @@ export const Dungeon = () => {
   const teamStats = useAppSelector(selectTeam);
   //enemy
   const enemyStats = useAppSelector(selectEnemy);
+  //silinecek
+  const inventory = useAppSelector(selectInventory);
 
   const [attackOrder, setAttackOrder] = useState([
     {
@@ -56,6 +64,8 @@ export const Dungeon = () => {
   const [fightBgn, setFightBgn] = useState(false);
   const [floorOver, setFloorOver] = useState(false);
   const [victory, setVictory] = useState(false);
+  const [encounter, setEncounter] = useState("Combat");
+  const [rewards, setRewards] = useState({ Gold: 0 });
 
   const currAttacker = {
     team: attackOrder[0].position.charAt(0),
@@ -64,7 +74,7 @@ export const Dungeon = () => {
   };
 
   useEffect(() => {
-    encounterGenerator(dispatch, depth);
+    encounterGenerator(dispatch, depth, setEncounter);
   }, []);
 
   useEffect(() => {
@@ -90,6 +100,9 @@ export const Dungeon = () => {
       enemyStats[1].status === "Dead" &&
       enemyStats[2].status === "Dead"
     ) {
+      const r = rewardGenerator(encounter, depth);
+      setRewards(r);
+      dispatch(incGoldBy(r.Gold));
       setVictory(true);
       setFloorOver(true);
     } else if (
@@ -112,10 +125,13 @@ export const Dungeon = () => {
           floor,
           teamSelection[0],
           teamSelection[1],
-          teamSelection[2]
+          teamSelection[2],
+          setEncounter
         )
-      : encounterGenerator(dispatch, floor);
+      : encounterGenerator(dispatch, floor, setEncounter);
   };
+
+  /*--------------------------3D STUFF---------------------------------*/
 
   return (
     <div className="room-container">
@@ -127,7 +143,9 @@ export const Dungeon = () => {
       >
         {victory ? (
           <>
-            <div className="info-text">You Succeed</div>
+            <div className="info-text">
+              You Succeed {rewards.Gold} {inventory.currency[0].gold}
+            </div>
             <button
               onClick={() => {
                 goDepth(depth + 1, false);
@@ -155,7 +173,7 @@ export const Dungeon = () => {
             return <div key={key}>{item.name}</div>;
           })}
         </div>
-        <div className="depth">Depth: {depth}</div>
+        <div className="depth">Depth: {depth} </div>
         <div className="utility-buttons">
           <button
             disabled={fightBgn}
@@ -185,8 +203,14 @@ export const Dungeon = () => {
               className={`frontline ${
                 currAttacker.team + currAttacker.row === "T0" ? "active" : ""
               }`}
+              id={"frontline"}
             >
               {teamStats[0].name}
+              <Canvas camera={{ position: [0.8, 1, 2] }}>
+                <ambientLight />
+                <OrbitControls />
+                <HondaModel />
+              </Canvas>
             </div>
             <div
               onClick={() => {}}
@@ -196,8 +220,14 @@ export const Dungeon = () => {
               className={`midline ${
                 currAttacker.team + currAttacker.row === "T1" ? "active" : ""
               }`}
+              id={"midline"}
             >
               {teamStats[1].name}
+              <Canvas camera={{ position: [0.8, 1, 2] }}>
+                <ambientLight />
+                <OrbitControls />
+                <HondaModel />
+              </Canvas>
             </div>
             <div
               onClick={() => {}}
@@ -207,8 +237,14 @@ export const Dungeon = () => {
               className={`backline ${
                 currAttacker.team + currAttacker.row === "T2" ? "active" : ""
               }`}
+              id={"backline"}
             >
               {teamStats[2].name}
+              <Canvas camera={{ position: [0.8, 1, 2] }}>
+                <ambientLight />
+                <OrbitControls />
+                <HondaModel />
+              </Canvas>
             </div>
           </div>
           <div className="info-bar">
@@ -287,116 +323,128 @@ export const Dungeon = () => {
           </div>
         </div>
         <div className="encounter">
-          <div className="enemies">
-            <div
-              className={`frontline ${
-                currAttacker.team + currAttacker.row === "E0" ? "active" : ""
-              }`}
-            >
-              {enemyStats[0].name}
-            </div>
-            <button
-              disabled={enemyDisable[0] || enemyStats[0].status === "Dead"}
-              onClick={() => {
-                setAttackOrder(
-                  attackEnemy(
-                    dispatch,
-                    teamStats[currAttacker.row],
-                    1,
-                    attackOrder
-                  )
-                );
-                setEnemyDisable([true, true, true]);
-              }}
-            >
-              ATTACK!
-            </button>
-            <div
-              className={`midline ${
-                currAttacker.team + currAttacker.row === "E1" ? "active" : ""
-              }`}
-            >
-              {enemyStats[1].name}
-            </div>
-            <button
-              disabled={enemyDisable[1] || enemyStats[1].status === "Dead"}
-              onClick={() => {
-                setAttackOrder(
-                  attackEnemy(
-                    dispatch,
-                    teamStats[currAttacker.row],
-                    2,
-                    attackOrder
-                  )
-                );
-                setEnemyDisable([true, true, true]);
-              }}
-            >
-              ATTACK!
-            </button>
-            <div
-              className={`backline ${
-                currAttacker.team + currAttacker.row === "E2" ? "active" : ""
-              }`}
-            >
-              {enemyStats[2].name}
-            </div>
-            <button
-              disabled={enemyDisable[2] || enemyStats[2].status === "Dead"}
-              onClick={() => {
-                setAttackOrder(
-                  attackEnemy(
-                    dispatch,
-                    teamStats[currAttacker.row],
-                    3,
-                    attackOrder
-                  )
-                );
-                setEnemyDisable([true, true, true]);
-              }}
-            >
-              ATTACK!
-            </button>
-          </div>
-          <div className="enemy-info-bar">
-            <div className="enemy-skill-bar">
-              <button
-                disabled={!(currAttacker.team === "E" && fightBgn)}
-                onClick={() => {
-                  setAttackOrder(
-                    simEnemyAttack(
-                      dispatch,
-                      enemyStats[currAttacker.row],
-                      attackOrder,
-                      teamStats
-                    )
-                  );
-                }}
-              >
-                PlayEnemyTurn
-              </button>
-            </div>
-            <div className="enemy-info">
-              <div className="fe-info">
-                <div className="name">{enemyStats[0].name}</div>
-                <div className="health">Health: {enemyStats[0].health}</div>
-                <div className="speed">Speed: {enemyStats[0].speed}</div>
-                <div className="status">Status: {enemyStats[0].status}</div>
+          {encounter === "Combat" ? (
+            <>
+              <div className="enemies">
+                <div
+                  className={`frontline ${
+                    currAttacker.team + currAttacker.row === "E0"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  {enemyStats[0].name}
+                </div>
+                <button
+                  disabled={enemyDisable[0] || enemyStats[0].status === "Dead"}
+                  onClick={() => {
+                    setAttackOrder(
+                      attackEnemy(
+                        dispatch,
+                        teamStats[currAttacker.row],
+                        1,
+                        attackOrder
+                      )
+                    );
+                    setEnemyDisable([true, true, true]);
+                  }}
+                >
+                  ATTACK!
+                </button>
+                <div
+                  className={`midline ${
+                    currAttacker.team + currAttacker.row === "E1"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  {enemyStats[1].name}
+                </div>
+                <button
+                  disabled={enemyDisable[1] || enemyStats[1].status === "Dead"}
+                  onClick={() => {
+                    setAttackOrder(
+                      attackEnemy(
+                        dispatch,
+                        teamStats[currAttacker.row],
+                        2,
+                        attackOrder
+                      )
+                    );
+                    setEnemyDisable([true, true, true]);
+                  }}
+                >
+                  ATTACK!
+                </button>
+                <div
+                  className={`backline ${
+                    currAttacker.team + currAttacker.row === "E2"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  {enemyStats[2].name}
+                </div>
+                <button
+                  disabled={enemyDisable[2] || enemyStats[2].status === "Dead"}
+                  onClick={() => {
+                    setAttackOrder(
+                      attackEnemy(
+                        dispatch,
+                        teamStats[currAttacker.row],
+                        3,
+                        attackOrder
+                      )
+                    );
+                    setEnemyDisable([true, true, true]);
+                  }}
+                >
+                  ATTACK!
+                </button>
               </div>
-              <div className="me-info">
-                <div className="name">{enemyStats[1].name}</div>
-                <div className="health">Health: {enemyStats[1].health}</div>
-                <div className="speed">Speed: {enemyStats[1].speed}</div>
-                <div className="status">Status: {enemyStats[1].status}</div>
+              <div className="enemy-info-bar">
+                <div className="enemy-skill-bar">
+                  <button
+                    disabled={!(currAttacker.team === "E" && fightBgn)}
+                    onClick={() => {
+                      setAttackOrder(
+                        simEnemyAttack(
+                          dispatch,
+                          enemyStats[currAttacker.row],
+                          attackOrder,
+                          teamStats
+                        )
+                      );
+                    }}
+                  >
+                    PlayEnemyTurn
+                  </button>
+                </div>
+                <div className="enemy-info">
+                  <div className="fe-info">
+                    <div className="name">{enemyStats[0].name}</div>
+                    <div className="health">Health: {enemyStats[0].health}</div>
+                    <div className="speed">Speed: {enemyStats[0].speed}</div>
+                    <div className="status">Status: {enemyStats[0].status}</div>
+                  </div>
+                  <div className="me-info">
+                    <div className="name">{enemyStats[1].name}</div>
+                    <div className="health">Health: {enemyStats[1].health}</div>
+                    <div className="speed">Speed: {enemyStats[1].speed}</div>
+                    <div className="status">Status: {enemyStats[1].status}</div>
+                  </div>
+                  <div className="be-info">
+                    <div className="name">{enemyStats[2].name}</div>
+                    <div className="health">Health: {enemyStats[2].health}</div>
+                    <div className="speed">Speed: {enemyStats[2].speed}</div>
+                    <div className="status">Status: {enemyStats[2].status}</div>
+                  </div>
+                </div>
               </div>
-              <div className="be-info">
-                <div className="name">{enemyStats[2].name}</div>
-                <div className="health">Health: {enemyStats[2].health}</div>
-                <div className="speed">Speed: {enemyStats[2].speed}</div>
-                <div className="status">Status: {enemyStats[2].status}</div>
-              </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            "ERROR!!"
+          )}
         </div>
       </div>
       <div className="bottombar">
