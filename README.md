@@ -33,7 +33,7 @@ npm install
 npm start
 ```
 
-###The game will run on http://localhost:3000 by default
+### The game will run on http://localhost:3000 by default
 
 Built With
 TypeScript - A typed superset of JavaScript
