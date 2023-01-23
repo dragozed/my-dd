@@ -160,7 +160,7 @@ export const encounterGenerator = (
     })
   );
   const rnd = getRndInteger(1, 1000);
-  if (rnd <= 500) {
+  if (rnd <= 1000) {
     setEncounter("Combat");
     const k = Math.ceil((depth + 1) / 10); //increased by 1 every 10 levels
     dispatch(

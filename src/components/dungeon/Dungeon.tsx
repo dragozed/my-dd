@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { Canvas } from "@react-three/fiber";
-import { HondaModel } from "./modelsJS/hondaModel";
+import { DonutModel } from "./modelsJS/Donutcmp";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -34,6 +34,8 @@ import {
 } from "./dungeonSlice";
 import "./Dungeon.scss";
 import { OrbitControls } from "@react-three/drei";
+import { HemisphereLight } from "three";
+import { MonkeyModel } from "./modelsJS/Monkeycmp";
 
 Modal.setAppElement("#root");
 
@@ -206,10 +208,10 @@ export const Dungeon = () => {
               id={"frontline"}
             >
               {teamStats[0].name}
-              <Canvas camera={{ position: [0.8, 1, 2] }}>
+              <Canvas camera={{ position: [-0, 1.3, 3.5] }}>
                 <ambientLight />
                 <OrbitControls />
-                <HondaModel />
+                <MonkeyModel />
               </Canvas>
             </div>
             <div
@@ -223,10 +225,10 @@ export const Dungeon = () => {
               id={"midline"}
             >
               {teamStats[1].name}
-              <Canvas camera={{ position: [0.8, 1, 2] }}>
+              <Canvas camera={{ position: [-0, 1.3, 3.5] }}>
                 <ambientLight />
                 <OrbitControls />
-                <HondaModel />
+                <DonutModel />
               </Canvas>
             </div>
             <div
@@ -240,10 +242,10 @@ export const Dungeon = () => {
               id={"backline"}
             >
               {teamStats[2].name}
-              <Canvas camera={{ position: [0.8, 1, 2] }}>
+              <Canvas camera={{ position: [-0, 1.3, 3.5] }}>
                 <ambientLight />
                 <OrbitControls />
-                <HondaModel />
+                <DonutModel />
               </Canvas>
             </div>
           </div>
