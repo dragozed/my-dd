@@ -314,6 +314,9 @@ export const Dungeon = () => {
                       ? "active"
                       : ""
                   }`}
+                  style={{
+                    backgroundImage: `url(/img/characters/goblin.png)`,
+                  }}
                 >
                   {enemyStats[0].name}
                 </div>
@@ -339,6 +342,9 @@ export const Dungeon = () => {
                       ? "active"
                       : ""
                   }`}
+                  style={{
+                    backgroundImage: `url(/img/characters/goblin.png)`,
+                  }}
                 >
                   {enemyStats[1].name}
                 </div>
@@ -364,6 +370,9 @@ export const Dungeon = () => {
                       ? "active"
                       : ""
                   }`}
+                  style={{
+                    backgroundImage: `url(/img/characters/goblin.png)`,
+                  }}
                 >
                   {enemyStats[2].name}
                 </div>

@@ -107,23 +107,29 @@
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
+        button {
+          width: 64px;
+        }
         .frontline {
           width: 256px;
           height: 256px;
           background-color: grey;
           border: solid rgb(71, 71, 71);
+          background-size: cover;
         }
         .midline {
           width: 256px;
           height: 256px;
           background-color: red;
           border: solid rgb(71, 71, 71);
+          background-size: cover;
         }
         .backline {
           width: 256px;
           height: 256px;
           background-color: yellow;
           border: solid rgb(71, 71, 71);
+          background-size: cover;
         }
         .active {
           border: solid rgb(17, 206, 17);
